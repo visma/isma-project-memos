@@ -1,0 +1,19 @@
+<profile>
+    <id>database-developer</id>
+    <activation>
+        <property>
+            <name>!database</name>
+        </property>
+    </activation>
+    <properties>
+        <databaseServer/>
+        <databasePort/>
+        <databaseCatalog>PUBLIC</databaseCatalog>
+        <databaseBase>memodatabase-tr</databaseBase>
+        <databaseUser>SA</databaseUser>
+        <databasePassword></databasePassword>
+        <databaseJdbcUrl>jdbc:hsqldb:file:H:/hsqldb_data/@databaseBase@</databaseJdbcUrl>
+        <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
+        <databaseType>hsqldb</databaseType>
+    </properties>
+</profile>

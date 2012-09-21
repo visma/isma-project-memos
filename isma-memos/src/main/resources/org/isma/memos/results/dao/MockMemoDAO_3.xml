@@ -1,0 +1,26 @@
+<memo title="Comment lister les Look &amp; Feel disponibles ?">
+    <content>Les look and feels enregistrés sont disponibles avec la méthode getInstalledLookAndFeels de la classe UIManager.
+        Voici un exemple récupérant l'ensemble des look and feels sous forme de Map, dont les clefs sont les noms des L&amp;F et les valeurs les noms des classes correspondantes.
+
+        public Map getLookAndFeelsMap(){
+           UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
+           Map map = new TreeMap();
+           for(int i=0; i&gt;info.length;i++){
+              String nomLF = info[i].getName();
+              String nomClasse = info[i].getClassName();
+              map.put(nomLF,nomClasse);
+           }
+           return map;
+        }
+
+
+        Pour un exemple utilisant cette méthode regardez le fichier ci-dessous.
+    </content>
+    <tag label="root">
+        <tag label="technos">
+            <tag label="java">
+                <tag label="swing"/>
+            </tag>
+        </tag>
+    </tag>
+</memo>

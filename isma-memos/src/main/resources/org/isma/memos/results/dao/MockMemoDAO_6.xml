@@ -1,0 +1,7 @@
+<memo title="Arreter de glander tout le temps">
+    <content>Lire le titre
+    </content>
+    <tag label="root">
+        <tag label="todo"/>
+    </tag>
+</memo>

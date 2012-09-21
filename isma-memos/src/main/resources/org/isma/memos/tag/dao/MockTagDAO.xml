@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tag label="root">
+    <tag label="technos">
+        <tag label="java">
+            <tag label="intellij"/>
+            <tag label="maven"/>
+            <tag label="java-bugs"/>
+            <tag label="swing"/>
+        </tag>
+        <tag label="sql">
+            <tag label="sql-bugs"/>
+            <tag label="performance"/>
+        </tag>
+        <tag label="web">
+            <tag label="html"/>
+            <tag label="javascript"/>
+            <tag label="css"/>
+        </tag>
+    </tag>
+    <tag label="base de données">
+        <tag label="acces"/>
+    </tag>
+    <tag label="support">
+        <tag label="messagerie"/>
+        <tag label="poste de travail"/>
+    </tag>
+    <tag label="applications">
+        <tag label="appliUne"/>
+        <tag label="appliDeux"/>
+    </tag>
+    <tag label="documentation"/>
+    <tag label="organigrammes"/>
+    <tag label="jeux videos"/>
+    <tag label="todo"/>
+</tag>

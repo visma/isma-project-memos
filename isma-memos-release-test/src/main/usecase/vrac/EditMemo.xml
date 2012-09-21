@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<release-test name="EditMemo"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="http://test-release.xsd"
+              enabled="true">
+
+    <description>Edition des memos</description>
+    <echo message="executions des drops sur url='${jdbc.server}', user='${jdbc.user}', pass='${jdbc.pwd}'"/>
+    <sql driver="org.hsqldb.jdbcDriver" url="${jdbc.server}" userid="${jdbc.user}" password="${jdbc.pwd}">
+        <![CDATA[
+drop table ATTACHMENT if exists
+drop table MEMO_TAGS if exists
+drop table MEMO if exists
+drop table TAG if exists
+SHUTDOWN
+                ]]>
+    </sql>
+    <!--<tokio-load id="EditMemos.file" file="EditMemos.tokio"/>-->
+    <!--<tokio-set-db id="EditMemos.jdbc" refId="EditMemos.file" scenario="Cas_Normal"/>-->
+    <!-- TODO tester aussi les tags et les attachments -->
+    <call-method file="InitTags.xmf"/>
+    <gui-test session="session">
+        <group name="Saisie d'un memo">
+            <assertEnabled expected="true" menu="Fichier:New Memo"/>
+            <click menu="Fichier:New Memo"/>
+            <assertFrame title="New Memo"/>
+            <setValue name="editTitleTextField" value="Camion"/>
+            <setValue name="editContentTextArea" value="Hohoho !"/>
+            <group name="saisie d une piece jointe">
+                <click name="attachButton"/>
+                <setValue name="FILE_TEXT_FIELD" value="${project.basedir}/src/main/resources/attachments/camion.jpg"/>
+                <click label="Ouvrir"/>
+            </group>
+            <click label="Save"/>
+            <assertValue expected="Memo saved" dialogTitle="Memo saved"/>
+            <click label="OK"/>
+            <assertFrame title="New Memo" closed="true"/>
+        </group>
+        <group name="Saisie d'un 2nd memo">
+            <click menu="Fichier:New Memo"/>
+            <assertFrame title="New Memo"/>
+            <setValue name="editTitleTextField" value="Titre 2"/>
+            <setValue name="editContentTextArea" value="Contenu 2"/>
+            <click name="editTagTree" path="root:organigramme"/>
+            <click label="Save"/>
+            <assertValue expected="Memo saved" dialogTitle="Memo saved"/>
+            <click label="OK"/>
+            <assertFrame title="New Memo" closed="true"/>
+        </group>
+        <group name="Affichage des memos dans le preview">
+            <click name="searchButton"/>
+            <assertListSize name="resultsTable" expected="2"/>
+            <assertTable name="resultsTable" mode="display" row="0" column="Title" expected="Camion"/>
+            <assertTable name="resultsTable" mode="display" row="0" column="Tags" expected=""/>
+            <assertTable name="resultsTable" mode="display" row="0" column="2" expected="1"/>
+            <assertTable name="resultsTable" mode="display" row="1" column="Title" expected="Titre 2"/>
+            <assertTable name="resultsTable" mode="display" row="1" column="Tags" expected="organigramme"/>
+            <assertTable name="resultsTable" mode="display" row="1" column="2" expected=""/>
+
+            <click name="resultsTable" row="1"/>
+
+            <assertValue name="titleTextField" expected="Titre 2"/>
+            <assertValue name="tagsTextField" expected="organigramme"/>
+            <assertValue name="contentTextArea" expected="Contenu 2"/>
+        </group>
+        <group name="Modification du 1er memo">
+            <clickRight name="resultsTable" row="0">
+                <assertListSize expected="2"/>
+                <assertList expected="Modify" row="0" mode="display"/>
+                <assertList expected="Delete" row="1" mode="display"/>
+                <select label="Modify"/>
+            </clickRight>
+            <assertFrame title="Edition Memo"/>
+            <assertValue name="editTitleTextField" expected="Camion"/>
+            <assertValue name="editContentTextArea" expected="Hohoho !"/>
+
+            <setValue name="editTitleTextField" value="Camion (Modified)"/>
+            <setValue name="editContentTextArea" value="Hohoho ! (Modified)"/>
+
+            <assertValue name="memoedit.link.camion.jpg" matching="contains" expected="camion.jpg"/>
+            <!-- petite bidouille : le clickRight marche pas sur un JLabel, donc j ai doublonne le comportement du click droit vers le click middle-->
+            <clickMiddle name="memoedit.link.camion.jpg">
+                <assertListSize expected="2"/>
+                <assertList expected="Save" row="0"/>
+                <assertList expected="Delete" row="1"/>
+                <select label="Delete"/>
+            </clickMiddle>
+            <assertValue expected="Are you sure to delete camion.jpg ?" dialogTitle="Delete attachment"/>
+            <click label="Oui"/>
+            <assertVisible name="memoedit.link.camion.jpg" expected="false"/>
+
+            <click label="Save"/>
+            <assertValue expected="Memo saved" dialogTitle="Memo saved"/>
+            <click label="OK"/>
+            <assertFrame title="Edition Memo" closed="true"/>
+        </group>
+        <group name="Controle du rafraichissement sur l'interface principale">
+            <assertTable name="resultsTable" mode="display" row="0" column="Title" expected="Camion (Modified)"/>
+            <assertTable name="resultsTable" mode="display" row="0" column="Tags" expected=""/>
+            <assertTable name="resultsTable" mode="display" row="0" column="2" expected=""/>
+
+            <assertValue name="titleTextField" expected="Camion (Modified)"/>
+            <assertValue name="tagsTextField" expected=""/>
+            <assertValue name="contentTextArea" expected="Hohoho ! (Modified)"/>
+
+        </group>
+        <group name="Modification du 2nd memo">
+            <clickRight name="resultsTable" row="1">
+                <assertListSize expected="2"/>
+                <assertList expected="Modify" row="0" mode="display"/>
+                <assertList expected="Delete" row="1" mode="display"/>
+                <select label="Modify"/>
+            </clickRight>
+            <assertFrame title="Edition Memo"/>
+            <assertValue name="editTitleTextField" expected="Titre 2"/>
+            <assertValue name="editContentTextArea" expected="Contenu 2"/>
+            <assertTree name="editTagTree" path="root [false]:organigramme [true]" exists="true"/>
+            <setValue name="editTitleTextField" value="Titre 2 (Modified)"/>
+            <setValue name="editContentTextArea" value="Contenu 2 (Modified)"/>
+
+            <click label="Save"/>
+            <assertValue expected="Memo saved" dialogTitle="Memo saved"/>
+            <click label="OK"/>
+            <assertFrame title="Edition Memo" closed="true"/>
+        </group>
+        <group name="Controle du rafraichissement sur l'interface principale">
+            <assertTable name="resultsTable" mode="display" row="1" column="Title" expected="Titre 2 (Modified)"/>
+            <assertTable name="resultsTable" mode="display" row="1" column="Tags" expected="organigramme"/>
+            <assertTable name="resultsTable" mode="display" row="1" column="2" expected=""/>
+
+            <assertValue name="titleTextField" expected="Titre 2 (Modified)"/>
+            <assertValue name="tagsTextField" expected="organigramme"/>
+            <assertValue name="contentTextArea" expected="Contenu 2 (Modified)"/>
+
+        </group>
+        <group name="fermeture">
+            <assertEnabled expected="true" menu="Fichier:Quitter"/>
+            <click menu="Fichier:Quitter"/>
+        </group>
+    </gui-test>
+    <!-- TODO relancer un gui pour controler la persistance -->
+</release-test>

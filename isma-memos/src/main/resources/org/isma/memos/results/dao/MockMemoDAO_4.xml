@@ -1,0 +1,13 @@
+<memo title="Qui commande ?">
+    <content>Organigramme idéal :
+
+        Isma
+         |
+         |
+         |
+    Univers connu
+    </content>
+    <tag label="root">
+        <tag label="organigrammes"/>
+    </tag>
+</memo>

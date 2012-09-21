@@ -1,0 +1,9 @@
+<memo title="Comment avoir les 10 étoiles à street turbo sur snes">
+    <content>Pendant la musique d'intro et vers la fin d'affichage du logo capcom, je crois que faut faire :
+bas, R, haut, L, Y, B, X, A
+Si la manip est réussie : une petit musique se déclenchera :)
+    </content>
+    <tag label="root">
+        <tag label="jeux videos"/>
+    </tag>
+</memo>

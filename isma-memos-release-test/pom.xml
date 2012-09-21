@@ -1,0 +1,213 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- POM's layout - http://www.javaworld.com/javaworld/jw-05-2006/jw-0529-maven.html -->
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+          | POM Relationships
+          -->
+
+    <artifactId>isma-memos-release-test</artifactId>
+    <parent>
+        <groupId>org.isma</groupId>
+        <artifactId>isma-project-memos</artifactId>
+        <version>0.1</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.isma</groupId>
+            <artifactId>isma-memos</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.isma</groupId>
+            <artifactId>isma-memos</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.codjo.tokio</groupId>
+            <artifactId>codjo-tokio</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.codjo.release-test</groupId>
+            <artifactId>codjo-release-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.codjo.gui-toolkit</groupId>
+            <artifactId>codjo-gui-toolkit</artifactId>
+            <classifier>tests</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>net.codjo.database</groupId>
+            <artifactId>codjo-database-hsqldb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.codjo.database</groupId>
+            <artifactId>codjo-database-hsqldb</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!--
+         | Project Information
+         -->
+
+    <name>memos tests release</name>
+    <properties>
+        <clientMainTestClass>org.isma.memos.main.MemosLauncherTestRelease</clientMainTestClass>
+        <applicationName>Memos</applicationName>
+        <databaseType>hsqldb</databaseType>
+    </properties>
+
+    <!--
+    | Build Settings
+    -->
+
+    <packaging>pom</packaging>
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources-filtered</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dependency-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>jcom</groupId>
+                                    <artifactId>jcom-windows-x86</artifactId>
+                                    <outputDirectory>${basedir}\target\dll</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.codjo.maven.mojo</groupId>
+                <artifactId>maven-config-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>net.codjo.maven.mojo</groupId>
+                <artifactId>maven-test-release-plugin</artifactId>
+                <configuration>
+                    <!--<jvmArgs>-Xmx512m -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</jvmArgs>-->
+                    <jvmArgs>-Djava.library.path=${basedir}/target/dll</jvmArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--<profiles>-->
+        <!--<profile>-->
+            <!--<id>database-hsql</id>-->
+            <!--<activation>-->
+                <!--<jdk>1.6</jdk>-->
+            <!--</activation>-->
+            <!--<properties>-->
+                <!--<databaseServer/>-->
+                <!--<databasePort/>-->
+                <!--<databaseCatalog/>-->
+                <!--<databaseBase>memo-tr</databaseBase>-->
+
+                <!--<databaseUser>SA</databaseUser>-->
+                <!--<databasePassword></databasePassword>-->
+
+                <!--<databaseJdbcUrl>jdbc:hsqldb:file:${basedir}\${databaseBase}</databaseJdbcUrl>-->
+                <!--<databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>-->
+                <!--<databaseType>hsqldb</databaseType>-->
+            <!--</properties>-->
+        <!--</profile>-->
+    <!--</profiles>-->
+
+    <!--<profiles>-->
+    <!--<profile>-->
+    <!--<id>tests-java-integration</id>-->
+    <!--<activation>-->
+    <!--<property>-->
+    <!--<name>process</name>-->
+    <!--<value>integration</value>-->
+    <!--</property>-->
+    <!--</activation>-->
+    <!--<build>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.apache.maven.plugins</groupId>-->
+    <!--<artifactId>maven-resources-plugin</artifactId>-->
+    <!--<executions>-->
+    <!--<execution>-->
+    <!--<phase>process-test-resources</phase>-->
+    <!--<goals>-->
+    <!--<goal>testResources</goal>-->
+    <!--</goals>-->
+    <!--</execution>-->
+    <!--</executions>-->
+    <!--</plugin>-->
+    <!--<plugin>-->
+    <!--<groupId>org.apache.maven.plugins</groupId>-->
+    <!--<artifactId>maven-compiler-plugin</artifactId>-->
+    <!--<executions>-->
+    <!--<execution>-->
+    <!--<phase>test-compile</phase>-->
+    <!--<goals>-->
+    <!--<goal>testCompile</goal>-->
+    <!--</goals>-->
+    <!--</execution>-->
+    <!--</executions>-->
+    <!--</plugin>-->
+    <!--<plugin>-->
+    <!--<groupId>org.apache.maven.plugins</groupId>-->
+    <!--<artifactId>maven-surefire-plugin</artifactId>-->
+    <!--<executions>-->
+    <!--<execution>-->
+    <!--<phase>test</phase>-->
+    <!--<goals>-->
+    <!--<goal>test</goal>-->
+    <!--</goals>-->
+    <!--</execution>-->
+    <!--</executions>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</build>-->
+    <!--</profile>-->
+    <!--</profiles>-->
+</project>

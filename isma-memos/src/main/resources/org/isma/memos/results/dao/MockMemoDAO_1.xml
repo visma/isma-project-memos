@@ -1,0 +1,33 @@
+<memo title="Comment utiliser yourkit">
+    <content>Pour lancer Yourkit, sur le poste de Benoît, il faut :
+
+        - Dans IDEA, Edit Configurations, choisir l'application
+        - Ajouter le paramètre -agentlib:yjpagent dans les "VM parameters"
+        - Lancer l'application à profiler (GPTaux, ...)
+        - Démarrer Yourkit (menu Démarrer)
+        - Clicker sur "Connect to locally running proflied application"
+
+        Pour traquer efficacement une fuite mémoire :
+
+        - Se positionner sur l'onglet "Memory"
+        - Saisir une classe ou un pattern de la classe (ex: com.agf) dans le champ de saisie "Class name"
+        - Forcer un garbage collector (icone poubelle)
+        - Clicker sur le bouton "Mark Current Values" et trier la colonne Objects en décroissant
+        - Executer une fonctionnalité suspecte sur l'application monitorée puis revenir dans un état mémoire stable (ex: ouverture/fermeture d'une popup)
+        - Forcer un garbage collector (icone poubelle)
+        - Contrôler le status des Objects (+/-) pour déceler des fuites
+
+        Pour traquer plus en profondeur la fuite mémoire :
+
+        - Faire un snapshot mémoire (l'icone avec la puce mémoire et la feuille)
+        - Saisir le nom de la classe à contrôler avec le champ de saisie "Class name"
+        - Click droit, "Paths for GC Roots" sur la classe pour savoir pourquoi cette instance est encore référencée.
+
+        Cette fonctionnalité est néanmoins difficile à utiliser s'il y a à la fois des instances qui sont des fuites et d'autres qui n'en sont pas car on ne peut pas faire facilement la distinction
+    </content>
+    <tag label="root">
+        <tag label="technos">
+            <tag label="java"/>
+        </tag>
+    </tag>
+</memo>

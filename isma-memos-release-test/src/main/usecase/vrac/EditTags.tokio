@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<cases name="AUTOMATIC"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="file:C:/dev/platform/cache/xsd/oscar-cases.xsd">
+    <case id="Cas_Normal">
+        <input>
+            <table name="TAG">
+                <row>
+                    <field name="ID" value="1"/>
+                    <field name="LABEL" value="root"/>
+                </row>
+                <row>
+                    <field name="ID" value="2"/>
+                    <field name="LABEL" value="technos"/>
+                    <field name="ID_PARENT" value="1"/>
+                </row>
+            </table>
+        </input>
+        <output>
+            <table name="TAG">
+                <row>
+                    <field name="ID" value="1"/>
+                    <field name="LABEL" value="root"/>
+                </row>
+                <row>
+                    <field name="ID" value="2"/>
+                    <field name="ID_PARENT" value="1"/>
+                    <field name="LABEL" value="technos"/>
+                </row>
+                <row>
+                    <field name="ID" value="3"/>
+                    <field name="ID_PARENT" value="1"/>
+                    <field name="LABEL" value="organigamme"/>
+                </row>
+            </table>
+        </output>
+    </case>
+</cases>

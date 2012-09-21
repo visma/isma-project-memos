@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en-us">
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+
+<body>
+<img src="images/applicationImage.png" alt="Memos"/><br/>
+
+<h1>Installation</h1>
+<a href="index.html">Retour à l'index</a>
+
+<p>Cette rubrique indique les étapes pour l'exploitation des sources. Elle est réservée aux développeurs.</p>
+
+<h2>Prérequis</h2>
+<ul>
+    <li>Java 1.6</li>
+    <li>Maven 2</li>
+</ul>
+
+<h2>Initialisation</h2>
+<p>
+    Installation : <br/>
+    <code>&gt;mvn clean install</code><br/><br/>
+    (Optionnel pour créer l'environnement de l'IDE intellij <b>avec</b> le framework codjo)<br/>
+    <code>&gt;idea</code><br/><br/>
+    (Optionnel pour créer l'environnement de l'IDE intellij <b>sans</b> le framework codjo)<br/>
+    <code>&gt;mvn idea:idea</code>
+</p>
+
+<h2>Configuration pour les tests-releases</h2>
+Alimenter le settings.xml avec le profil suivant : <a href="profil.xml">Profil</a>
+
+<h2>Exécution des tests</h2>
+
+<p>
+    Si le framework codjo est disponible, les tests releases (tests ihm) peuvent être lancés :<br/>
+    <code>&gt;mvn clean install -Dprocess=integration</code><br/><br/>
+
+    Sinon :_(<br/>
+    <code>&gt;mvn test</code><br/><br/>
+</p>
+
+<h2>Générations des rapports de qualimétrie de code</h2>
+
+<p>
+    <code>&gt;cd ${artifactId}</code><br/>
+    <code>&gt;mvn site</code><br/>
+    <code>&gt;mvn dashboard:dashboard</code><br/>
+    <br/>
+    Le fichier de rapport se situe ensuite dans le repertoire <i>target/site/dashboard-report.html</i>
+</p>
+</body>
+</html>

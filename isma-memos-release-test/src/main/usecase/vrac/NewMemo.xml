@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<release-test name="NewMemo"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="http://test-release.xsd"
+              enabled="true">
+
+    <description>Edition des nouveaux memos</description>
+    <echo message="executions des drops sur url='${jdbc.server}', user='${jdbc.user}', pass='${jdbc.pwd}'"/>
+    <sql driver="org.hsqldb.jdbcDriver" url="${jdbc.server}" userid="${jdbc.user}" password="${jdbc.pwd}">
+        <![CDATA[
+drop table ATTACHMENT if exists
+drop table MEMO_TAGS if exists
+drop table MEMO if exists
+drop table TAG if exists
+
+SHUTDOWN
+                ]]>
+    </sql>
+    <!--<tokio-load id="NewMemos.file" file="NewMemos.tokio"/>-->
+    <!--<tokio-set-db id="NewMemos.jdbc" refId="NewMemos.file" scenario="Cas_Normal"/>-->
+
+    <call-method file="InitTags.xmf"/>
+
+    <gui-test session="session">
+        <group name="Ouverture de la fenêtre d'édition des memos">
+            <assertEnabled expected="true" menu="Fichier:New Memo"/>
+            <click menu="Fichier:New Memo"/>
+            <assertFrame title="New Memo"/>
+        </group>
+        <group name="Saisie d'un memo">
+            <setValue name="editTitleTextField" value="Titre 1"/>
+            <setValue name="editContentTextArea" value="Contenu 1"/>
+            <click name="editTagTree" path="root:organigramme"/>
+            <assertTree name="editTagTree" path="root [false]:organigramme [true]" exists="true"/>
+
+            <group name="saisie d une piece jointe et sauvegarde immédiate ailleurs">
+                <click name="attachButton"/>
+                <setValue name="FILE_TEXT_FIELD" value="${project.basedir}/src/main/resources/attachments/camion.jpg"/>
+                <click label="Ouvrir"/>
+                <assertValue name="link.camion.jpg" matching="contains" expected="camion.jpg"/>
+                <!-- petite bidouille : le clickRight marche pas sur un JLabel, donc j ai doublonne le comportement du click droit vers le click middle-->
+                <clickMiddle name="link.camion.jpg">
+                    <assertListSize expected="2"/>
+                    <assertList expected="Save" row="0"/>
+                    <assertList expected="Delete" row="1"/>
+                    <select label="Save"/>
+                </clickMiddle>
+                <setValue name="FILE_TEXT_FIELD" value="${java.io.tmpdir}"/>
+                <click label="Ouvrir"/>
+                <assertValue dialogTitle="Attachment saved" expected="camion.jpg copied to ${java.io.tmpdir}"/>
+                <click label="OK"/>
+            </group>
+            <group name="saisie d une seconde piece jointe">
+                <click name="attachButton"/>
+                <setValue name="FILE_TEXT_FIELD" value="${project.basedir}/src/main/resources/attachments/text.txt"/>
+                <click label="Ouvrir"/>
+                <assertValue name="link.text.txt" matching="contains" expected="text.txt"/>
+            </group>
+            <click label="Save"/>
+            <assertValue expected="Memo saved" dialogTitle="Memo saved"/>
+            <click label="OK"/>
+            <assertFrame title="New Memo" closed="true"/>
+        </group>
+        <group name="Affichage du memo dans le preview">
+
+            <click name="searchButton"/>
+            <assertListSize name="resultsTable" expected="1"/>
+            <assertTable name="resultsTable" mode="display" row="0" column="Title" expected="Titre 1"/>
+            <assertTable name="resultsTable" mode="display" row="0" column="Tags" expected="organigramme"/>
+
+            <assertValue name="titleTextField" expected=""/>
+            <assertValue name="tagsTextField" expected=""/>
+            <assertValue name="contentTextArea" expected=""/>
+
+            <click name="resultsTable" row="0" />
+            <assertValue name="titleTextField" expected="Titre 1"/>
+            <assertValue name="tagsTextField" expected="organigramme"/>
+            <assertValue name="contentTextArea" expected="Contenu 1"/>
+
+            <clickMiddle name="link.text.txt">
+                <assertListSize expected="1"/>
+                <assertList expected="Save" row="0"/>
+                <select label="Save"/>
+            </clickMiddle>
+            <setValue name="FILE_TEXT_FIELD" value="${java.io.tmpdir}"/>
+            <click label="Ouvrir"/>
+            <assertValue dialogTitle="Attachment saved" expected="text.txt copied to ${java.io.tmpdir}"/>
+            <click label="OK"/>
+        </group>
+        <group name="fermeture">
+            <assertEnabled expected="true" menu="Fichier:Quitter"/>
+            <click menu="Fichier:Quitter"/>
+        </group>
+    </gui-test>
+    <file-assert expected="NewMemo_camion_etalon.jpg" actual="camion.jpg"/>
+    <file-assert expected="NewMemo_text.txt" actual="text.txt"/>
+    <delete file="${java.io.tmpdir}camion.jpg"/>
+    <delete file="${java.io.tmpdir}text.txt"/>
+
+    <!-- TODO relancer un gui pour controler la persistance -->
+</release-test>

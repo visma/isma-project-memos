@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<release-test name="EditTag"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="http://test-release.xsd"
+              enabled="true">
+
+    <description>Edition des tags</description>
+    <echo message="executions des drops sur url='${jdbc.server}', user='${jdbc.user}', pass='${jdbc.pwd}'"/>
+    <sql driver="org.hsqldb.jdbcDriver" url="${jdbc.server}" userid="${jdbc.user}" password="${jdbc.pwd}">
+        <![CDATA[
+drop table ATTACHMENT if exists
+drop table MEMO_TAGS if exists
+drop table MEMO if exists
+drop table TAG if exists
+SHUTDOWN
+                ]]>
+    </sql>
+    <!-- TODO si le module sql fonctionne, desactiver les drop et activer le tokio-load -->
+    <!--<tokio-load id="EditTags.file" file="EditTags.tokio"/>-->
+    <!--<tokio-set-db id="EditTags.jdbc" refId="EditTags.file" scenario="Cas_Normal"/>-->
+
+    <!-- TODO plus tester l'état de l'arbre d'edition -->
+    <gui-test>
+        <group name="Ouverture de la fenêtre d'édition des tags">
+            <assertFrame matching="startsWith" title="Memos"/>
+            <assertEnabled expected="true" menu="Fichier:Tag Edition"/>
+            <click menu="Fichier:Tag Edition"/>
+        </group>
+        <group name="Saisie des tags">
+            <pressKey value="INSERT"/>
+            <assertValue dialogTitle="Error" expected="No selected node"/>
+            <click label="OK"/>
+
+            <click name="tagEditionTree" path="root"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="technos"/>
+            <click label="OK"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="organigramme"/>
+            <click label="OK"/>
+
+            <expandAllTree name="tagEditionTree"/>
+            <click name="tagEditionTree" path="root:technos"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="java"/>
+            <click label="OK"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="sql"/>
+            <click label="OK"/>
+
+            <expandAllTree name="tagEditionTree"/>
+            <click name="tagEditionTree" path="root:technos:java"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="swingue"/>
+            <click label="OK"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="yourkit"/>
+            <click label="OK"/>
+
+            <expandAllTree name="tagEditionTree"/>
+            <click name="tagEditionTree" path="root:technos:java:swingue"/>
+            <pressKey value="F2"/>
+            <assertValue name="OptionPane.textField" expected="swingue"/>
+            <setValue name="OptionPane.textField" value="swing"/>
+            <click label="OK"/>
+            <!-- tester ce message avec des resultats en bas (tester le clean des results et du preview) -->
+            <!--<assertValue expected="Possible obsolete tags : clearing results" dialogTitle="Message"/>-->
+            <!--<click label="OK"/>-->
+
+            <click name="tagEditionTree" path="root"/>
+
+            <pressKey value="INSERT"/>
+            <setValue name="OptionPane.textField" value="todelete"/>
+            <click label="OK"/>
+
+            <click name="tagEditionTree" path="root:todelete"/>
+            <pressKey value="DELETE"/>
+            <assertValue dialogTitle="Delete Tag" expected="Are you sure to delete todelete ?"/>
+            <click label="Oui"/>
+        </group>
+        <group name="verification de l'etat de l'arbre d edition et de l arbre de recherche">
+            <expandAllTree name="tagEditionTree"/>
+            <assertTree name="tagEditionTree" path="root:technos:java:swing" exists="true" row="3"/>
+            <assertTree name="tagEditionTree" path="root:technos:java:yourkit" exists="true" row="4"/>
+            <assertTree name="tagEditionTree" path="root:technos:sql" exists="true" row="5"/>
+            <assertTree name="tagEditionTree" path="root:organigramme" exists="true" row="6"/>
+            <closeFrame title="Tag Edition"/>
+
+            <expandAllTree name="tagTree"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:java [false]:swing [false]" exists="true"
+                        row="3"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:java [false]:yourkit [false]" exists="true"
+                        row="4"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:sql [false]" exists="true"
+                        row="5"/>
+            <assertTree name="tagTree" path="root [false]:organigramme [false]" exists="true"
+                        row="6"/>
+        </group>
+        <group name="Fin de l'edition">
+        </group>
+        <group name="Vérification de la maj de l'arbre des tags dans le panel de recherche">
+            <expandAllTree name="tagTree"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:java [false]:swing [false]" exists="true"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:java [false]:yourkit [false]" exists="true"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:sql [false]" exists="true"/>
+            <assertTree name="tagTree" path="root [false]:organigramme [false]" exists="true"/>
+        </group>
+        <group name="fermeture">
+            <assertEnabled expected="true" menu="Fichier:Quitter"/>
+            <click menu="Fichier:Quitter"/>
+        </group>
+    </gui-test>
+    <gui-test>
+        <group name="Reouverture de la fenêtre d'édition des tags">
+            <assertFrame matching="startsWith" title="Memos"/>
+        </group>
+        <group name="Vérification de l'arbre des tags dans le panel de recherche">
+            <expandAllTree name="tagTree"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:java [false]:swing [false]" exists="true"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:java [false]:yourkit [false]" exists="true"/>
+            <assertTree name="tagTree" path="root [false]:technos [false]:sql [false]" exists="true"/>
+            <assertTree name="tagTree" path="root [false]:organigramme [false]" exists="true"/>
+        </group>
+        <group name="fermeture">
+            <assertEnabled expected="true" menu="Fichier:Quitter"/>
+            <click menu="Fichier:Quitter"/>
+        </group>
+    </gui-test>
+    <!--<tokio-assert refId="EditTags.jdbc" allTables="true"/>-->
+</release-test>

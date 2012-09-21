@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<method xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://test-release.xsd">
+
+    <description>Creation de tags</description>
+
+    <body>
+        <gui-test session="session">
+            <group name="Ouverture de la fenêtre d'édition des memos">
+                <assertFrame matching="startsWith" title="Memos"/>
+                <assertEnabled expected="true" menu="Fichier:Tag Edition"/>
+                <click menu="Fichier:Tag Edition"/>
+            </group>
+            <group name="Saisie des tags">
+                <click name="tagEditionTree" path="root"/>
+
+                <pressKey value="INSERT"/>
+                <setValue name="OptionPane.textField" value="technos"/>
+                <click label="OK"/>
+
+                <pressKey value="INSERT"/>
+                <setValue name="OptionPane.textField" value="organigramme"/>
+                <click label="OK"/>
+
+                <expandAllTree name="tagEditionTree"/>
+                <click name="tagEditionTree" path="root:technos"/>
+
+                <pressKey value="INSERT"/>
+                <setValue name="OptionPane.textField" value="java"/>
+                <click label="OK"/>
+
+                <pressKey value="INSERT"/>
+                <setValue name="OptionPane.textField" value="sql"/>
+                <click label="OK"/>
+
+                <expandAllTree name="tagEditionTree"/>
+                <click name="tagEditionTree" path="root:technos:java"/>
+
+                <pressKey value="INSERT"/>
+                <setValue name="OptionPane.textField" value="swing"/>
+                <click label="OK"/>
+
+                <pressKey value="INSERT"/>
+                <setValue name="OptionPane.textField" value="yourkit"/>
+                <click label="OK"/>
+                <closeFrame title="Tag Edition"/>
+            </group>
+        </gui-test>
+    </body>
+</method>

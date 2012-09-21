@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en-us">
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+
+<body>
+<img src="images/applicationImage.png" alt="Memos"/><br/>
+
+<h1>${applicationName} TODO List</h1>
+
+<h2>UI</h2>
+<ul>
+    <li>SplashScreen : use it to initialize database if no struct and load tags into cache</li>
+    <li>JPanel's Rendering is ugly (too much borders)</li>
+    <li>attachments not refresh in preview if modification on current memo (check again)</li>
+    <li>attachments not always refreshed in preview if change selection on result table (check again)</li>
+</ul>
+
+<h2>DB</h2>
+<ul>
+    <li>Connection : too much call to buildConnection()</li>
+    <li>shutdown use for hsql commit (mem mode only )??</li>
+    <li>use aspectj for request duration time</li>
+</ul>
+
+<h2>Tag Edition</h2>
+<ul>
+    <li>Test move (drag and drop)</li>
+</ul>
+
+</body>
+</html>

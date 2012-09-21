@@ -1,0 +1,26 @@
+<memo title="Variables dans les pom.xml et les fichiers properties">
+    <content>Variables dans les pom.xml et les fichiers .properties
+Il y a 2 types de variables :
+
+- les variables de la forme ${var}
+    - elles sont remplacées par la valeur de la propriété ant définie par maven (balises properties)
+- les variables de la forme @var@
+    - elles sont remplacée :
+        - par les valeurs des propriétés ant en local
+        - par les valeurs des variables delreco en livraison
+    - elles sont utilisées :
+        - dans les balises jnlp des pom.xml :
+            - elles conservent leur forme dans le fichier *.jnlp.template présent dans le répertoire client du livrable
+            - elles sont remplacée par delreco à la livraison afin de générer le fichier *.jnlp
+        - dans les fichiers server-config.properties :
+            - elles conservent leur forme dans le fichier server-config.properties.template présent dans le répertoire server du livrable
+            - elles sont remplacées par delreco à la livraison afin de générer le fichier server-config.properties
+    </content>
+    <tag label="root">
+        <tag label="technos">
+            <tag label="java">
+                <tag label="maven"/>
+            </tag>
+        </tag>
+    </tag>
+</memo>
