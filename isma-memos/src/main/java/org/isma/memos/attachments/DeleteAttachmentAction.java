@@ -14,19 +14,19 @@ import static javax.swing.JOptionPane.showConfirmDialog;
 public class DeleteAttachmentAction extends LogicGlassedActionListener {
     private JPanel attachmentPanel;
     private HyperLink link;
-    private List<File> attachmentFileList;
+    private List<File> attachmentFiles;
     private File file;
 
 
     public DeleteAttachmentAction(ApplicationContext context,
                                   JPanel attachmentPanel,
                                   HyperLink link,
-                                  List<File> attachmentFileList,
+                                  List<File> attachmentFiles,
                                   File file) {
         super(context);
         this.attachmentPanel = attachmentPanel;
         this.link = link;
-        this.attachmentFileList = attachmentFileList;
+        this.attachmentFiles = attachmentFiles;
         this.file = file;
     }
 
@@ -39,7 +39,7 @@ public class DeleteAttachmentAction extends LogicGlassedActionListener {
                                                         confirmMessage,
                                                         confirmTitle,
                                                         YES_NO_OPTION)) {
-            attachmentFileList.remove(file);
+            attachmentFiles.remove(file);
             attachmentPanel.remove(link);
             attachmentPanel.revalidate();
         }

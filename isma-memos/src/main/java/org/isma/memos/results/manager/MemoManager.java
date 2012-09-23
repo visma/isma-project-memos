@@ -17,18 +17,18 @@ public class MemoManager {
     }
 
 
-    public List<Memo> search(Tag rootTag, String searchedTitle, String searchContent, List<Tag> searchedTagList)
+    public List<Memo> search(Tag rootTag, String searchedTitle, String searchContent, List<Tag> searchedTags)
           throws Exception {
-        return dao.search(rootTag, searchedTitle, searchContent, searchedTagList);
+        return dao.search(rootTag, searchedTitle, searchContent, searchedTags);
     }
 
 
-    public Memo save(Memo memo, String title, String content, List<Tag> tagList, List<Attachment> attachmentList)
+    public Memo save(Memo memo, String title, String content, List<Tag> tags, List<Attachment> attachments)
           throws Exception {
         if (memo != null) {
             dao.deleteMemo(memo.getId());
         }
-        return dao.saveMemo(title, content, tagList, attachmentList);
+        return dao.saveMemo(title, content, tags, attachments);
     }
 
 

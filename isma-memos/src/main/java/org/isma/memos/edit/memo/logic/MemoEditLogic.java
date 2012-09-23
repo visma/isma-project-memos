@@ -33,7 +33,7 @@ public class MemoEditLogic extends AbstractLogic<MemoManagerConfiguration> {
     private MemoEditForm form = new MemoEditForm();
 
     private Memo memo;
-    private List<File> attachmentFileList;
+    private List<File> attachmentFiles;
 
 
     public MemoEditLogic(ApplicationContext<MemoManagerConfiguration> context,
@@ -54,12 +54,12 @@ public class MemoEditLogic extends AbstractLogic<MemoManagerConfiguration> {
         if (memo != null) {
             form.getTitleTextField().setText(memo.getTitle());
             form.getContentTextArea().setText(memo.getContent());
-            tagTreeBuilder.selectTagOnTree(form.getTagTree(), memo.getTagList());
+            tagTreeBuilder.selectTagOnTree(form.getTagTree(), memo.getTags());
 
             form.getAttachmentPanel().removeAll();
             form.getAttachmentPanel().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-            for (Attachment attachment : memo.getAttachmentList()) {
+            for (Attachment attachment : memo.getAttachments()) {
                 addExistingLinkIntoAttachmentPanel(attachment);
             }
             form.getAttachmentPanel().revalidate();
@@ -71,7 +71,7 @@ public class MemoEditLogic extends AbstractLogic<MemoManagerConfiguration> {
         HyperLink link = new HyperLink(attachment.getName(), "memoedit");
         File attachmentFile = memoManager.loadAttachment(attachment,
                                                          context.getConfiguration().getAttachmentTmpDirectory());
-        attachmentFileList.add(attachmentFile);
+        attachmentFiles.add(attachmentFile);
 
         link.addLeftActionListener(new OpenAttachmentAction(context, memoManager, attachment));
 //        link.addRightActionListener(new DeleteAttachmentAction(context, form.getAttachmentPanel(),
@@ -80,7 +80,7 @@ public class MemoEditLogic extends AbstractLogic<MemoManagerConfiguration> {
 //                                                               attachmentFile));
         link.addRightActionListener(new LinkRightClickAction(context,
                                                              form.getAttachmentPanel(),
-                                                             attachmentFileList,
+                attachmentFiles,
                                                              link,
                                                              attachmentFile));
         form.getAttachmentPanel().add(link);
@@ -106,41 +106,41 @@ public class MemoEditLogic extends AbstractLogic<MemoManagerConfiguration> {
                 showMessageDialog(form.getMainPanel(), "Memo saved", "Memo saved", INFORMATION_MESSAGE);
             }
         });
-        attachmentFileList = new ArrayList<File>();
+        attachmentFiles = new ArrayList<File>();
         form.getAttachButton().addActionListener(new AttachmentChooserListener(context,
                                                                                memoManager,
                                                                                form.getMainPanel(),
                                                                                form.getAttachmentPanel(),
-                                                                               attachmentFileList,
+                attachmentFiles,
                                                                                memo));
     }
 
 
     private void save() throws Exception {
-        final List<Tag> tagList = tagTreeBuilder.buildSelectedTagList(form.getTagTree());
-        List<Attachment> attachments = convertToAttachment(attachmentFileList);
+        final List<Tag> tags = tagTreeBuilder.buildSelectedTags(form.getTagTree());
+        List<Attachment> attachments = convertToAttachment(attachmentFiles);
         Memo memoSaved = memoManager.save(memo,
                                           form.getTitleTextField().getText(),
                                           form.getContentTextArea().getText(),
-                                          tagList,
+                                          tags,
                                           attachments);
         boolean isNewMemo = memo == null;
         if (!isNewMemo) {
             memo.setId(memoSaved.getId());
             memo.setTitle(memoSaved.getTitle());
             memo.setContent(memoSaved.getContent());
-            memo.setTagList(memoSaved.getTagList());
-            memo.setAttachmentList(memoSaved.getAttachmentList());
+            memo.setTags(memoSaved.getTags());
+            memo.setAttachments(memoSaved.getAttachments());
         }
     }
 
 
-    private List<Attachment> convertToAttachment(List<File> fileList) {
-        List<Attachment> attachmentList = new ArrayList<Attachment>();
-        for (File file : fileList) {
-            attachmentList.add(new Attachment(null, null, file.getAbsolutePath()));
+    private List<Attachment> convertToAttachment(List<File> files) {
+        List<Attachment> attachments = new ArrayList<Attachment>();
+        for (File file : files) {
+            attachments.add(new Attachment(null, null, file.getAbsolutePath()));
         }
-        return attachmentList;
+        return attachments;
     }
 
 

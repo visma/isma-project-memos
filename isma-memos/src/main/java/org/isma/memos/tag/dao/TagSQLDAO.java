@@ -21,7 +21,7 @@ public class TagSQLDAO extends AbstractSQLDAO implements ITagDAO {
 
 
     public Tag loadAllTags() throws Exception {
-        List<TagDTO> tagList = new ArrayList<TagDTO>();
+        List<TagDTO> tagDTOs = new ArrayList<TagDTO>();
         PreparedStatement pst = getConnection().prepareStatement("SELECT ID, ID_PARENT, NAME FROM TAG order by ID");
         pst.clearParameters();
         ResultSet rs = pst.executeQuery();
@@ -29,22 +29,22 @@ public class TagSQLDAO extends AbstractSQLDAO implements ITagDAO {
             int id = rs.getInt("ID");
             int idParent = rs.getInt("ID_PARENT");
             String name = rs.getString("NAME");
-            tagList.add(new TagDTO(id, idParent == 0 ? null : idParent, name));
+            tagDTOs.add(new TagDTO(id, idParent == 0 ? null : idParent, name));
         }
-        return tagDTOFactory.createRootTag(tagList);
+        return tagDTOFactory.createRootTag(tagDTOs);
     }
 
 
-    public void saveTag(List<Tag> newTagList) throws Exception {
-        for (Tag tag : newTagList) {
+    public void saveTag(List<Tag> newTags) throws Exception {
+        for (Tag tag : newTags) {
             saveTag(tag);
         }
         commit();
     }
 
 
-    public void deleteTag(List<Tag> tagList) throws Exception {
-        for (Tag tag : tagList) {
+    public void deleteTag(List<Tag> toDeleteTags) throws Exception {
+        for (Tag tag : toDeleteTags) {
             deleteTag(tag);
         }
         commit();

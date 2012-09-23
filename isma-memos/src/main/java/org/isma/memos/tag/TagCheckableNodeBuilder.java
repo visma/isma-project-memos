@@ -11,7 +11,7 @@ public class TagCheckableNodeBuilder {
 
     public static CheckableNode convertIntoCheckableNode(Tag tag) {
         CheckableNode tagNode = new CheckableNode(tag);
-        for (Tag subTag : tag.getChildList()) {
+        for (Tag subTag : tag.getChildren()) {
             tagNode.addChild(convertIntoCheckableNode(subTag));
         }
         return tagNode;

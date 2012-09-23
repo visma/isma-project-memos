@@ -16,12 +16,12 @@ public class TagDTOFactory {
 
 
     //TODO ça m'a pas l'air top performant... pas grave tant que la liste est petite mais apres...
-    private Tag addChilds(TagDTO parentDTO, List<TagDTO> dtoList) {
+    private Tag addChilds(TagDTO parentDTO, List<TagDTO> dtos) {
         Tag tag = new Tag(parentDTO.getName(), parentDTO.getId());
-        for (TagDTO tagDTO : dtoList) {
+        for (TagDTO tagDTO : dtos) {
 
             if (tagDTO.getIdParent() != null && tagDTO.getIdParent() == parentDTO.getId()) {
-                tag.addChild(addChilds(tagDTO, dtoList));
+                tag.addChild(addChilds(tagDTO, dtos));
             }
         }
         return tag;

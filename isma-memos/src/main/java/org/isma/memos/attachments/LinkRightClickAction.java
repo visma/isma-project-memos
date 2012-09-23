@@ -18,18 +18,18 @@ public class LinkRightClickAction implements ActionListener {
     private boolean readonly;
     private ApplicationContext<MemoManagerConfiguration> context;
     private JPanel attachmentPanel;
-    private List<File> fileList;
+    private List<File> files;
 
 
     private LinkRightClickAction(ApplicationContext<MemoManagerConfiguration> context,
                                  JPanel attachmentPanel,
-                                 List<File> fileList,
+                                 List<File> files,
                                  HyperLink link,
                                  File file,
                                  boolean readonly) {
         this.context = context;
         this.attachmentPanel = attachmentPanel;
-        this.fileList = fileList;
+        this.files = files;
         this.link = link;
         this.file = file;
         this.readonly = readonly;
@@ -38,11 +38,11 @@ public class LinkRightClickAction implements ActionListener {
 
     public LinkRightClickAction(ApplicationContext<MemoManagerConfiguration> context,
                                 JPanel attachmentPanel,
-                                List<File> fileList,
+                                List<File> files,
                                 HyperLink link,
                                 File file) {
 
-        this(context, attachmentPanel, fileList, link, file, false);
+        this(context, attachmentPanel, files, link, file, false);
     }
 
 
@@ -66,7 +66,7 @@ public class LinkRightClickAction implements ActionListener {
         menu.add(saveItem);
         if (!readonly) {
             JMenuItem deleteItem = new JMenuItem("Delete");
-            deleteItem.addActionListener(new DeleteAttachmentAction(context, attachmentPanel, link, fileList, file));
+            deleteItem.addActionListener(new DeleteAttachmentAction(context, attachmentPanel, link, files, file));
             menu.add(deleteItem);
         }
         menu.show(link, link.getX(), link.getY());

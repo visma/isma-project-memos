@@ -19,37 +19,37 @@ public class InitSQLDAO extends AbstractSQLDAO implements IInitDAO {
 
 
     public void init() throws Exception {
-        List<String> tableList = loadTables();
-        createTablesIfNotExists(tableList);
+        List<String> tables = loadTables();
+        createTablesIfNotExists(tables);
         commit();
     }
 
 
     private List<String> loadTables() throws SQLException {
-        List<String> tableList = new ArrayList<String>();
+        List<String> tables = new ArrayList<String>();
         PreparedStatement pst = getConnection().prepareStatement(
               "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.SYSTEM_TABLES where TABLE_TYPE = 'TABLE'");
         pst.clearParameters();
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
-            tableList.add(rs.getString(1).toUpperCase());
+            tables.add(rs.getString(1).toUpperCase());
         }
-        return tableList;
+        return tables;
     }
 
 
-    private void createTablesIfNotExists(List<String> tableList) throws Exception {
+    private void createTablesIfNotExists(List<String> tables) throws Exception {
         System.out.println("creating tables (if not already exists)...");
-        if (!tableList.contains("TAG")) {
+        if (!tables.contains("TAG")) {
             createTableTag();
         }
-        if (!tableList.contains("MEMO")) {
+        if (!tables.contains("MEMO")) {
             createTableMemo();
         }
-        if (!tableList.contains("ATTACHMENT")) {
+        if (!tables.contains("ATTACHMENT")) {
             createTableAttachment();
         }
-        if (!tableList.contains("MEMO_TAGS")) {
+        if (!tables.contains("MEMO_TAGS")) {
             createTableMemoTags();
         }
     }

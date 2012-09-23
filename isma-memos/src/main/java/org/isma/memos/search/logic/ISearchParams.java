@@ -11,5 +11,5 @@ public interface ISearchParams {
     public String getContent();
 
 
-    public List<Tag> getTagList() throws Exception;
+    public List<Tag> getTags() throws Exception;
 }

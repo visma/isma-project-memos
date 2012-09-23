@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MockMemoDAO implements IMemoDAO {
     private MockXmlParser parser = new MockXmlParser();
-    private List<Memo> memoList = new ArrayList<Memo>();
+    private List<Memo> memos = new ArrayList<Memo>();
 
 
     public MockMemoDAO() throws Exception {
@@ -26,7 +26,7 @@ public class MockMemoDAO implements IMemoDAO {
         URL resource = getClass().getResource(getClass().getSimpleName() + "_" + index++ + ".xml");
         while (resource != null) {
             final Element rootElement = parser.loadXmlDocument(resource);
-            memoList.add(parser.convertToMemo(rootElement));
+            memos.add(parser.convertToMemo(rootElement));
             resource = getClass().getResource(getClass().getSimpleName() + "_" + index++ + ".xml");
         }
     }
@@ -37,14 +37,14 @@ public class MockMemoDAO implements IMemoDAO {
     }
 
 
-    public Memo saveMemo(String title, String content, List<Tag> tagList, List<Attachment> attachmentList) {
+    public Memo saveMemo(String title, String content, List<Tag> tags, List<Attachment> attachments) {
         throw new RuntimeException("not implemented");
     }
 
 
-    public List<Memo> search(Tag rootTag, String paramTitle, String paramContent, List<Tag> paramTagList) {
+    public List<Memo> search(Tag rootTag, String paramTitle, String paramContent, List<Tag> tags) {
         List<Memo> foundList = new ArrayList<Memo>();
-        for (Memo memo : memoList) {
+        for (Memo memo : memos) {
             if (paramTitle.length() > 0) {
                 if (!contains(memo.getTitle(), paramTitle)) {
                     continue;
@@ -55,10 +55,10 @@ public class MockMemoDAO implements IMemoDAO {
                     continue;
                 }
             }
-            if (!paramTagList.isEmpty()) {
+            if (!tags.isEmpty()) {
                 boolean paramTagsMatches = true;
-                for (Tag paramTag : paramTagList) {
-                    final boolean contains = memo.getTagList().contains(paramTag);
+                for (Tag paramTag : tags) {
+                    final boolean contains = memo.getTags().contains(paramTag);
                     if (!contains) {
                         paramTagsMatches = false;
                         break;

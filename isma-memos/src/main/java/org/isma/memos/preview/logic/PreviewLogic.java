@@ -46,14 +46,14 @@ public class PreviewLogic extends AbstractLogic<MemoManagerConfiguration>
         final JPanel attachmentPanel = form.getAttachmentPanel();
         form.getTitleTextField().setText(selection.getTitle());
         form.getContentTextArea().setText(selection.getContent());
-        form.getTagsTextField().setText(JoinLabeleable.join(selection.getTagList()));
+        form.getTagsTextField().setText(JoinLabeleable.join(selection.getTags()));
 
         attachmentPanel.removeAll();
         //second revalidate() call is not enough to have a proper refresh
         attachmentPanel.revalidate();
         attachmentPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-        for (Attachment attachment : selection.getAttachmentList()) {
+        for (Attachment attachment : selection.getAttachments()) {
             addAttachmentLink(attachmentPanel, attachment);
         }
         attachmentPanel.revalidate();

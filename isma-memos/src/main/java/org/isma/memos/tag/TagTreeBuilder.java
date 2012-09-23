@@ -25,21 +25,21 @@ public class TagTreeBuilder {
     }
 
 
-    public List<Tag> buildSelectedTagList(JTree tagTree) throws Exception {
+    public List<Tag> buildSelectedTags(JTree tagTree) throws Exception {
         TreeModel model = tagTree.getModel();
-        List<Tag> selectedTagList = new ArrayList<Tag>();
+        List<Tag> selectedTags = new ArrayList<Tag>();
         for (CheckableNode checkableNode : ((CheckBoxNodeTreeModel)model).getSelectedNodes()) {
-            selectedTagList.add((Tag)checkableNode.getBeanToDisplay());
+            selectedTags.add((Tag) checkableNode.getBeanToDisplay());
         }
-        return selectedTagList;
+        return selectedTags;
     }
 
 
-    public void selectTagOnTree(JTree tagTree, List<Tag> selectedTagList) throws Exception {
+    public void selectTagOnTree(JTree tagTree, List<Tag> selectedTags) throws Exception {
         TreeModel model = tagTree.getModel();
         for (CheckableNode checkableNode : ((CheckBoxNodeTreeModel)model).getAllNodes()) {
             Tag tag = (Tag)checkableNode.getBeanToDisplay();
-            boolean contains = selectedTagList.contains(tag);
+            boolean contains = selectedTags.contains(tag);
             checkableNode.setSelected(contains);
         }
     }

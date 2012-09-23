@@ -24,15 +24,15 @@ public class TagManager {
 
 
     public void saveTag(Tag tag) throws Exception {
-        List<Tag> tagList = new ArrayList<Tag>();
-        tagList.add(tag);
-        dao.saveTag(tagList);
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(tag);
+        dao.saveTag(tags);
     }
 
 
     public void deleteTag(Tag tag) throws Exception {
-        List<Tag> tagList = new ArrayList<Tag>();
-        tagList.add(tag);
-        dao.deleteTag(tagList);
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(tag);
+        dao.deleteTag(tags);
     }
 }

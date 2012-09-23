@@ -22,7 +22,7 @@ public class AttachmentChooserListener implements ActionListener {
     private MemoManager memoManager;
     private Component parentComponent;
     private JPanel attachmentPanel;
-    private List<File> fileList;
+    private List<File> files;
     private JFileChooser fileChooser = new TestableFileChooser();
     private Memo memo;
 
@@ -31,12 +31,12 @@ public class AttachmentChooserListener implements ActionListener {
                                      MemoManager memoManager,
                                      Component parentComponent,
                                      JPanel attachmentPanel,
-                                     List<File> fileList, Memo memo) {
+                                     List<File> files, Memo memo) {
         this.context = context;
         this.memoManager = memoManager;
         this.parentComponent = parentComponent;
         this.attachmentPanel = attachmentPanel;
-        this.fileList = fileList;
+        this.files = files;
         this.memo = memo;
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
@@ -46,7 +46,7 @@ public class AttachmentChooserListener implements ActionListener {
         int returnVal = fileChooser.showOpenDialog(parentComponent);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            fileList.add(file);
+            files.add(file);
             attachmentPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
             Attachment newAttachment = new Attachment(null, memo == null ? null : memo.getId(), file.getAbsolutePath());
@@ -54,7 +54,7 @@ public class AttachmentChooserListener implements ActionListener {
             link.addLeftActionListener(new OpenAttachmentAction(context, memoManager, newAttachment));
             link.addRightActionListener(new LinkRightClickAction(context,
                                                                  attachmentPanel,
-                                                                 fileList,
+                    files,
                                                                  link,
                                                                  file));
             attachmentPanel.add(link);

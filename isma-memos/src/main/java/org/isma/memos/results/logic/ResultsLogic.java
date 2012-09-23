@@ -145,17 +145,17 @@ public class ResultsLogic extends AbstractLogic<MemoManagerConfiguration> implem
                 List<Memo> memoList = memoManager.search(tagManager.getRootTag(),
                                                          searchParams.getTitle(),
                                                          searchParams.getContent(),
-                                                         searchParams.getTagList());
+                                                         searchParams.getTags());
                 loadTable(memoList);
             }
         }.actionPerformed(e);
     }
 
 
-    private void loadTable(List<Memo> memoList) {
+    private void loadTable(List<Memo> memos) {
         removeSelectionListener();
         final JTable table = form.getResultsTable();
-        new ResultsTableBuilder().build(table, memoList);
+        new ResultsTableBuilder().build(table, memos);
         addSelectionListener();
     }
 

@@ -18,11 +18,11 @@ public class MockTagDAO implements ITagDAO {
     }
 
 
-    public void saveTag(List<Tag> newTagList) {
+    public void saveTag(List<Tag> newTags) {
     }
 
 
-    public void deleteTag(List<Tag> toDeleteTagList) {
+    public void deleteTag(List<Tag> toDeleteTags) {
         // Todo
     }
 }

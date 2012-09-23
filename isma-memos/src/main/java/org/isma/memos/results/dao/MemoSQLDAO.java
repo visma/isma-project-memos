@@ -25,10 +25,10 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
     }
 
 
-    private String joinIdTags(List<Tag> searchedTagList) {
-        String[] ids = new String[searchedTagList.size()];
+    private String joinIdTags(List<Tag> searchedTags) {
+        String[] ids = new String[searchedTags.size()];
         int index = 0;
-        for (Tag tag : searchedTagList) {
+        for (Tag tag : searchedTags) {
             ids[index++] = Integer.toString(tag.getId());
         }
         return StringUtils.join(ids, ", ");
@@ -43,12 +43,12 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
     }
 
 
-    private String buildSearchTagsClause(List<Tag> searchedTagList) {
-        if (searchedTagList.isEmpty()) {
+    private String buildSearchTagsClause(List<Tag> searchedTags) {
+        if (searchedTags.isEmpty()) {
             return "";
         }
-        return searchedTagList.size() + " = (select count(1) from MEMO_TAGS where ID_MEMO = M.ID and ID_TAG in ("
-               + joinIdTags(searchedTagList) + ")) ";
+        return searchedTags.size() + " = (select count(1) from MEMO_TAGS where ID_MEMO = M.ID and ID_TAG in ("
+               + joinIdTags(searchedTags) + ")) ";
     }
 
 
@@ -66,10 +66,10 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
     }
 
 
-    private String buildSearchWhereClause(String searchedTitle, String searchedContent, List<Tag> searchedTagList) {
+    private String buildSearchWhereClause(String searchedTitle, String searchedContent, List<Tag> searchedTags) {
         String titleClause = buildSearchTitleClause(searchedTitle);
         String contentClause = buildSearchContentClause(searchedContent);
-        String tagClause = buildSearchTagsClause(searchedTagList);
+        String tagClause = buildSearchTagsClause(searchedTags);
         String whereClause = titleClause;
         if (whereClause.length() > 0 && contentClause.length() > 0) {
             whereClause = whereClause + " and " + contentClause;
@@ -88,59 +88,59 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
 
 
     //TODO afficher les resultats si les tags fils correspondent aux criteres title/content
-    public List<Memo> search(Tag rootTag, String searchedTitle, String searchedContent, List<Tag> searchedTagList)
+    public List<Memo> search(Tag rootTag, String searchedTitle, String searchedContent, List<Tag> tags)
           throws Exception {
         Set<Memo> memoSet = new TreeSet<Memo>(new LabeleableComparator());
 
         //Pas possible de faire de distinct avec le clob
         String sql = "SELECT M.ID, M.TITLE, M.CONTENT FROM MEMO M left join MEMO_TAGS MT on M.ID = MT.ID_MEMO"
-                     + buildSearchWhereClause(searchedTitle, searchedContent, searchedTagList)
+                     + buildSearchWhereClause(searchedTitle, searchedContent, tags)
                      + "  ORDER BY M.TITLE";
         PreparedStatement stmt = getConnection().prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int idMemo = rs.getInt("ID");
             String title = rs.getString("TITLE");
-            List<Tag> selectedTagList = getTagListForMemo(rootTag, idMemo);
-            List<Attachment> attachmentList = getAttachmentListForMemo(idMemo);
+            List<Tag> selectedTags = getTagsForMemo(rootTag, idMemo);
+            List<Attachment> attachments = getAttachmentsForMemo(idMemo);
             final String content = clobToString(rs.getClob("CONTENT"));
-            Memo memo = new Memo(idMemo, title, content, selectedTagList, attachmentList);
+            Memo memo = new Memo(idMemo, title, content, selectedTags, attachments);
             memoSet.add(memo);
         }
         return new ArrayList<Memo>(memoSet);
     }
 
 
-    public Memo saveMemo(String title, String content, List<Tag> tagList, List<Attachment> attachmentList)
+    public Memo saveMemo(String title, String content, List<Tag> tags, List<Attachment> attachments)
           throws Exception {
         int idMemo = saveMemo(title, content);
-        saveTagListForMemo(idMemo, tagList);
-        saveAttachmentListForMemo(idMemo, attachmentList);
+        saveTagsForMemo(idMemo, tags);
+        saveAttachmentsForMemo(idMemo, attachments);
         commit();
-        return new Memo(idMemo, title, content, tagList, attachmentList);
+        return new Memo(idMemo, title, content, tags, attachments);
     }
 
 
-    private List<Tag> getTagListForMemo(Tag rootTag, int idMemo) throws SQLException {
+    private List<Tag> getTagsForMemo(Tag rootTag, int idMemo) throws SQLException {
         PreparedStatement pst = getConnection().prepareStatement(
               "SELECT T.ID, T.ID_PARENT, T.NAME FROM MEMO_TAGS MT inner join TAG T on T.ID = MT.ID_TAG where MT.ID_MEMO = ?");
         pst.setInt(1, idMemo);
         ResultSet rs = pst.executeQuery();
-        List<Tag> memoTagList = new ArrayList<Tag>();
+        List<Tag> memoTags = new ArrayList<Tag>();
         while (rs.next()) {
             int id = rs.getInt("ID");
             Tag memoTag = rootTag.getChild(id);
             if (memoTag == null) {
                 throw new RuntimeException("memo tag not found !");
             }
-            memoTagList.add(memoTag);
+            memoTags.add(memoTag);
         }
-        return memoTagList;
+        return memoTags;
     }
 
 
-    private List<Attachment> getAttachmentListForMemo(int idMemo) throws SQLException {
-        List<Attachment> beanList = new ArrayList<Attachment>();
+    private List<Attachment> getAttachmentsForMemo(int idMemo) throws SQLException {
+        List<Attachment> beans = new ArrayList<Attachment>();
         PreparedStatement pst = getConnection().prepareStatement(
               "SELECT A.ID, A.NAME FROM ATTACHMENT A where A.ID_MEMO = ?");
         pst.setInt(1, idMemo);
@@ -148,21 +148,21 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
         while (rs.next()) {
             int id = rs.getInt("ID");
             String name = rs.getString("NAME");
-            beanList.add(new Attachment(id == 0 ? null : id, idMemo, name));
+            beans.add(new Attachment(id == 0 ? null : id, idMemo, name));
         }
-        return beanList;
+        return beans;
     }
 
 
-    private void saveTagListForMemo(int idMemo, List<Tag> tagList) throws SQLException {
-        for (Tag tag : tagList) {
+    private void saveTagsForMemo(int idMemo, List<Tag> tags) throws SQLException {
+        for (Tag tag : tags) {
             saveTagForMemo(idMemo, tag);
         }
     }
 
 
-    private void saveAttachmentListForMemo(int idMemo, List<Attachment> attachmentList) throws Exception {
-        for (Attachment attachment : attachmentList) {
+    private void saveAttachmentsForMemo(int idMemo, List<Attachment> attachments) throws Exception {
+        for (Attachment attachment : attachments) {
             attachment.setIdMemo(idMemo);
             saveAttachmentForMemo(attachment);
         }

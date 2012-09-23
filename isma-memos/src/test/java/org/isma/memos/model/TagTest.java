@@ -30,7 +30,7 @@ public class TagTest extends TestCase {
     public void testAddChild() throws Exception {
         Tag tag = new Tag("parent");
 
-        assertEquals(0, tag.getChildList().size());
+        assertEquals(0, tag.getChildren().size());
         assertFalse(tag.hasChildren());
 
         tag.addChild(new Tag("child1"));
@@ -39,9 +39,9 @@ public class TagTest extends TestCase {
 
         tag.addChild(new Tag("child2"));
 
-        assertEquals(2, tag.getChildList().size());
-        assertEquals("child1", tag.getChildList().get(0).getLabel());
-        assertEquals("child2", tag.getChildList().get(1).getLabel());
+        assertEquals(2, tag.getChildren().size());
+        assertEquals("child1", tag.getChildren().get(0).getLabel());
+        assertEquals("child2", tag.getChildren().get(1).getLabel());
     }
 
 

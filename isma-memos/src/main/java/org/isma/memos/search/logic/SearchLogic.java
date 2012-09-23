@@ -62,7 +62,7 @@ public class SearchLogic extends AbstractLogic<MemoManagerConfiguration> impleme
     }
 
 
-    public List<Tag> getTagList() throws Exception {
-        return tagTreeBuilder.buildSelectedTagList(form.getTagTree());
+    public List<Tag> getTags() throws Exception {
+        return tagTreeBuilder.buildSelectedTags(form.getTagTree());
     }
 }

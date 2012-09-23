@@ -7,8 +7,8 @@ public interface ITagDAO {
     public Tag loadAllTags() throws Exception;
 
 
-    public void saveTag(List<Tag> newTagList) throws Exception;
+    public void saveTag(List<Tag> newTags) throws Exception;
 
 
-    public void deleteTag(List<Tag> toDeleteTagList) throws Exception;
+    public void deleteTag(List<Tag> toDeleteTags) throws Exception;
 }

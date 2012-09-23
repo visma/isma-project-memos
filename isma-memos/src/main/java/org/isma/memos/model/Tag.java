@@ -8,7 +8,7 @@ import java.util.List;
 public class Tag extends AbstractPersistantBean implements Labeleable {
     private String label;
     private Tag parent;
-    private List<Tag> childList = new ArrayList<Tag>();
+    private final List<Tag> children = new ArrayList<Tag>();
 
 
     public Tag(String label, Integer id) {
@@ -28,13 +28,13 @@ public class Tag extends AbstractPersistantBean implements Labeleable {
 
 
     public void addChild(Tag child) {
-        childList.add(child);
+        children.add(child);
         child.parent = this;
     }
 
 
     public void removeChild(Tag child) {
-        childList.remove(child);
+        children.remove(child);
         child.parent = null;
     }
 
@@ -49,13 +49,13 @@ public class Tag extends AbstractPersistantBean implements Labeleable {
     }
 
 
-    public List<Tag> getChildList() {
-        return childList;
+    public List<Tag> getChildren() {
+        return children;
     }
 
 
     public boolean hasChildren() {
-        return !childList.isEmpty();
+        return !children.isEmpty();
     }
 
 
@@ -65,26 +65,26 @@ public class Tag extends AbstractPersistantBean implements Labeleable {
 
 
     public boolean isLeaf() {
-        return childList.isEmpty();
+        return children.isEmpty();
     }
 
 
     public Tag[] getPath() {
-        List<Tag> pathList = new ArrayList<Tag>();
+        List<Tag> paths = new ArrayList<Tag>();
         Tag currentTag = this;
-        pathList.add(this);
+        paths.add(this);
         while (currentTag.getParent() != null) {
             currentTag = currentTag.getParent();
-            pathList.add(0, currentTag);
+            paths.add(0, currentTag);
         }
-        return pathList.toArray(new Tag[]{});
+        return paths.toArray(new Tag[]{});
     }
 
     public Tag getChild(int idTag) {
         if (getId().intValue() == idTag) {
             return this;
         }
-        for (Tag child : childList) {
+        for (Tag child : children) {
             Tag found = child.getChild(idTag);
             if (found != null) {
                 return found;

@@ -27,8 +27,8 @@ public class MockXmlParser {
             throw new RuntimeException("ml tag '<tag>' expected, actual <" + tagElement.getName() + ">");
         }
         Tag tag = new Tag(tagElement.getAttribute("label").getValue(), -1);
-        List tagChildList = tagElement.getChildren("tag");
-        for (Object tagChild : tagChildList) {
+        List tagChildren = tagElement.getChildren("tag");
+        for (Object tagChild : tagChildren) {
             Element tagChildElement = (Element)tagChild;
             Tag child = convertToTag(tagChildElement);
             tag.addChild(child);
@@ -46,20 +46,20 @@ public class MockXmlParser {
         final Element tagElement = memoElement.getChild("tag");
         final String content = contentElement.getContent(0).getValue();
         final Tag tag = convertToTag(tagElement);
-        final List<Tag> tagList = extractChildren(tag);
-        return new Memo(title, content, tagList, new ArrayList<Attachment>());
+        final List<Tag> tags = extractChildren(tag);
+        return new Memo(title, content, tags, new ArrayList<Attachment>());
     }
 
 
     private List<Tag> extractChildren(Tag tag) {
-        List<Tag> tagList = new ArrayList<Tag>();
+        List<Tag> tags = new ArrayList<Tag>();
         if (tag.isLeaf()) {
-            tagList.add(tag);
-            return tagList;
+            tags.add(tag);
+            return tags;
         }
-        for (Tag child : tag.getChildList()) {
-            tagList.addAll(extractChildren(child));
+        for (Tag child : tag.getChildren()) {
+            tags.addAll(extractChildren(child));
         }
-        return tagList;
+        return tags;
     }
 }

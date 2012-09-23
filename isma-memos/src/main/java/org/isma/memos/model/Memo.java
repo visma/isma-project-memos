@@ -6,22 +6,22 @@ import java.util.List;
 
 public class Memo extends AbstractPersistantBean implements Labeleable {
     private String title;
-    private List<Tag> tagList;
-    private List<Attachment> attachmentList;
+    private List<Tag> tags;
+    private List<Attachment> attachments;
     private String content;
 
 
-    public Memo(String title, String content, List<Tag> tagList, List<Attachment> attachmentList) {
-        this(null, title, content, tagList, attachmentList);
+    public Memo(String title, String content, List<Tag> tags, List<Attachment> attachments) {
+        this(null, title, content, tags, attachments);
     }
 
 
-    public Memo(Integer id, String title, String content, List<Tag> tagList, List<Attachment> attachmentList) {
+    public Memo(Integer id, String title, String content, List<Tag> tags, List<Attachment> attachments) {
         this.id = id;
         this.title = title;
-        this.tagList = tagList;
+        this.tags = tags;
         this.content = content;
-        this.attachmentList = attachmentList;
+        this.attachments = attachments;
     }
 
 
@@ -40,13 +40,13 @@ public class Memo extends AbstractPersistantBean implements Labeleable {
     }
 
 
-    public List<Tag> getTagList() {
-        return tagList;
+    public List<Tag> getTags() {
+        return tags;
     }
 
 
-    public List<Attachment> getAttachmentList() {
-        return attachmentList;
+    public List<Attachment> getAttachments() {
+        return attachments;
     }
 
 
@@ -60,13 +60,13 @@ public class Memo extends AbstractPersistantBean implements Labeleable {
     }
 
 
-    public void setTagList(List<Tag> tagList) {
-        this.tagList = tagList;
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
 
-    public void setAttachmentList(List<Attachment> attachmentList) {
-        this.attachmentList = attachmentList;
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
 

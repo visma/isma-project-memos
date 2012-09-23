@@ -52,11 +52,11 @@ public class TagLogic extends AbstractLogic<MemoManagerConfiguration> {
             @Override
             public void keyReleased(KeyEvent e) {
                 try {
-                    List<Integer> authorizedKeyList = new ArrayList<Integer>();
-                    authorizedKeyList.add(KeyEvent.VK_INSERT);
-                    authorizedKeyList.add(KeyEvent.VK_DELETE);
-                    authorizedKeyList.add(KeyEvent.VK_F2);
-                    if (!authorizedKeyList.contains(e.getKeyCode())) {
+                    List<Integer> authorizedKeys = new ArrayList<Integer>();
+                    authorizedKeys.add(KeyEvent.VK_INSERT);
+                    authorizedKeys.add(KeyEvent.VK_DELETE);
+                    authorizedKeys.add(KeyEvent.VK_F2);
+                    if (!authorizedKeys.contains(e.getKeyCode())) {
                         return;
                     }
                     TreePath[] selectionPaths = form.getTagEditionTree().getSelectionModel().getSelectionPaths();

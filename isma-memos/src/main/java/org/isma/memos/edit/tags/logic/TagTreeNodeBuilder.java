@@ -7,7 +7,7 @@ public class TagTreeNodeBuilder {
 
     public TagTreeNode buildRootTagNode(Tag rootTag) {
         TagTreeNode rootNode = new TagTreeNode(rootTag);
-        for (Tag tag : rootTag.getChildList()) {
+        for (Tag tag : rootTag.getChildren()) {
             if (tag.hasChildren()) {
                 rootNode.addChild(buildRootTagNode(tag));
             }

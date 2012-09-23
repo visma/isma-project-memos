@@ -14,8 +14,8 @@ import java.util.List;
 import static org.isma.memos.results.logic.ResultsTableModel.*;
 public class ResultsTableBuilder {
 
-    public void build(JTable table, List<Memo> memoList) {
-        table.setModel(new ResultsTableModel(memoList));
+    public void build(JTable table, List<Memo> memos) {
+        table.setModel(new ResultsTableModel(memos));
         table.getColumn(TITLE_COLUMN_NAME).setCellRenderer(new TitleTableCellRenderer());
         table.getColumn(TAGS_COLUMN_NAME).setCellRenderer(new TagsTableCellRenderer());
 
@@ -52,8 +52,8 @@ public class ResultsTableBuilder {
                                                        boolean hasFocus,
                                                        int row,
                                                        int column) {
-            List<Attachment> attachmentList = ((Memo)value).getAttachmentList();
-            String amount = attachmentList.isEmpty() ? "" : Integer.toString(attachmentList.size());
+            List<Attachment> attachments = ((Memo)value).getAttachments();
+            String amount = attachments.isEmpty() ? "" : Integer.toString(attachments.size());
             return super.getTableCellRendererComponent(table,
                                                        amount,
                                                        isSelected,
@@ -88,7 +88,7 @@ public class ResultsTableBuilder {
                                                        boolean hasFocus,
                                                        int row,
                                                        int column) {
-            String tagLabel = JoinLabeleable.join(((Memo)value).getTagList());
+            String tagLabel = JoinLabeleable.join(((Memo)value).getTags());
             return super.getTableCellRendererComponent(table,
                                                        tagLabel,
                                                        isSelected,
