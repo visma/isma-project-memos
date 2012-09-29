@@ -11,7 +11,7 @@ public class MemosLauncherTestRelease extends MemosLauncher {
 
 
     @Override
-    protected boolean mustDisplaySplashScreen() {
+    protected boolean showSplashScreen() {
         return false;
     }
 
