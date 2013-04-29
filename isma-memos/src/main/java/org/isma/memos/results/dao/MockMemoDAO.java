@@ -45,15 +45,11 @@ public class MockMemoDAO implements IMemoDAO {
     public List<Memo> search(Tag rootTag, String paramTitle, String paramContent, List<Tag> tags) {
         List<Memo> foundList = new ArrayList<Memo>();
         for (Memo memo : memos) {
-            if (paramTitle.length() > 0) {
-                if (!contains(memo.getTitle(), paramTitle)) {
+            if (paramTitle.length() > 0 && !contains(memo.getTitle(), paramTitle)) {
                     continue;
-                }
             }
-            if (paramContent.length() > 0) {
-                if (!contains(memo.getContent(), paramContent)) {
+            if (paramContent.length() > 0 && !contains(memo.getContent(), paramContent)) {
                     continue;
-                }
             }
             if (!tags.isEmpty()) {
                 boolean paramTagsMatches = true;

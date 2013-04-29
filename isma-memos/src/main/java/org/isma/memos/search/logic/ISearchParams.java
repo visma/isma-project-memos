@@ -5,11 +5,11 @@ import org.isma.memos.model.Tag;
 import java.util.List;
 
 public interface ISearchParams {
-    public String getTitle();
+    String getTitle();
 
 
-    public String getContent();
+    String getContent();
 
 
-    public List<Tag> getTags() throws Exception;
+    List<Tag> getTags() throws Exception;
 }

@@ -217,7 +217,6 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
     public File loadAttachement(Attachment attachment, File attachmentTmpDirectory) throws Exception {
         //Pas possible de faire de distinct avec le clob
         String sql = "SELECT NAME, CONTENT FROM ATTACHMENT WHERE ID = ?";
-        //System.out.println(sql);
         PreparedStatement stmt = getConnection().prepareStatement(sql);
         stmt.setInt(1, attachment.getId());
         ResultSet rs = stmt.executeQuery();

@@ -7,8 +7,8 @@ import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 
 public class TagEditingTreeCellRenderer implements TreeCellRenderer {
-    private final static Color FOREGROUND = Color.BLACK;
-    private final static Color BACKGROUND = Color.WHITE;
+    private static final Color FOREGROUND = Color.BLACK;
+    private static final Color BACKGROUND = Color.WHITE;
 
 
     public Component getTreeCellRendererComponent(JTree tree,

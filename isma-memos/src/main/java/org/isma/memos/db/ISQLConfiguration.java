@@ -1,14 +1,14 @@
 package org.isma.memos.db;
 
 public interface ISQLConfiguration {
-    public String getURL();
+    String getURL();
 
 
-    public String getUser();
+    String getUser();
 
 
-    public String getPassword();
+    String getPassword();
 
 
-    public String getDriverClassName();
+    String getDriverClassName();
 }

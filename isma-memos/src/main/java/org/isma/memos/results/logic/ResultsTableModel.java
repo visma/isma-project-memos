@@ -39,8 +39,8 @@ public class ResultsTableModel extends DefaultTableModel {
     @Override
     public Memo getValueAt(int row, int column) {
         try {
-
-            if (row >= 0) {//if ctrl + click on table, row value is -1 (??)
+            //if ctrl + click on table, row value is -1 (??)
+            if (row >= 0) {
                 return memos.get(row);
             }
         }

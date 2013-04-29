@@ -74,10 +74,6 @@ public class MemoEditLogic extends AbstractLogic<MemoManagerConfiguration> {
         attachmentFiles.add(attachmentFile);
 
         link.addLeftActionListener(new OpenAttachmentAction(context, memoManager, attachment));
-//        link.addRightActionListener(new DeleteAttachmentAction(context, form.getAttachmentPanel(),
-//                                                               link,
-//                                                               attachmentFileList,
-//                                                               attachmentFile));
         link.addRightActionListener(new LinkRightClickAction(context,
                                                              form.getAttachmentPanel(),
                 attachmentFiles,
