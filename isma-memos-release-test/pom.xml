@@ -61,6 +61,16 @@
         <clientMainTestClass>org.isma.memos.main.MemosLauncherTestRelease</clientMainTestClass>
         <applicationName>Memos</applicationName>
         <databaseType>hsqldb</databaseType>
+        
+        <databaseServer/>
+        <databasePort/>
+        <databaseCatalog/>
+        <databaseBase>memo-tr</databaseBase>
+        <databaseUser>SA</databaseUser>
+        <databasePassword></databasePassword>
+        <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}\${databaseBase}</databaseJdbcUrl>
+        <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
+        <databaseType>hsqldb</databaseType>
     </properties>
 
     <!--
