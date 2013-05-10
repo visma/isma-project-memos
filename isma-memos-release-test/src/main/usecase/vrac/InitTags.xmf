@@ -7,7 +7,7 @@
     <body>
         <gui-test session="session">
             <group name="Ouverture de la fenêtre d'édition des memos">
-                <assertFrame matching="startsWith" title="Memos"/>
+                <assertFrame matching="startsWith" title="PostIt Manager"/>
                 <assertEnabled expected="true" menu="Fichier:Tag Edition"/>
                 <click menu="Fichier:Tag Edition"/>
             </group>
