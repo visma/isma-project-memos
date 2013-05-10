@@ -14,33 +14,33 @@
             <group name="Saisie des tags">
                 <click name="tagEditionTree" path="root"/>
 
-                <pressKey value="i"/>
+                <pressKey value="I"/>
                 <setValue name="OptionPane.textField" value="technos"/>
                 <click label="OK"/>
 
-                <pressKey value="i"/>
+                <pressKey value="I"/>
                 <setValue name="OptionPane.textField" value="organigramme"/>
                 <click label="OK"/>
 
                 <expandAllTree name="tagEditionTree"/>
                 <click name="tagEditionTree" path="root:technos"/>
 
-                <pressKey value="i"/>
+                <pressKey value="I"/>
                 <setValue name="OptionPane.textField" value="java"/>
                 <click label="OK"/>
 
-                <pressKey value="i"/>
+                <pressKey value="I"/>
                 <setValue name="OptionPane.textField" value="sql"/>
                 <click label="OK"/>
 
                 <expandAllTree name="tagEditionTree"/>
                 <click name="tagEditionTree" path="root:technos:java"/>
 
-                <pressKey value="i"/>
+                <pressKey value="I"/>
                 <setValue name="OptionPane.textField" value="swing"/>
                 <click label="OK"/>
 
-                <pressKey value="i"/>
+                <pressKey value="I"/>
                 <setValue name="OptionPane.textField" value="yourkit"/>
                 <click label="OK"/>
                 <closeFrame title="Tag Edition"/>
