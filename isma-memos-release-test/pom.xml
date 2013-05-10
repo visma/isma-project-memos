@@ -59,9 +59,8 @@
     <name>memos tests release</name>
     <properties>
         <clientMainTestClass>org.isma.memos.main.MemosLauncherTestRelease</clientMainTestClass>
-        <applicationName>Memos</applicationName>
+        <!--<applicationName>PostIt Manager</applicationName>
         <databaseType>hsqldb</databaseType>
-        
         <databaseServer/>
         <databasePort/>
         <databaseCatalog/>
@@ -70,7 +69,7 @@
         <databasePassword></databasePassword>
         <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}/${databaseBase}</databaseJdbcUrl>
         <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
-        <databaseType>hsqldb</databaseType>
+        <databaseType>hsqldb</databaseType>-->
     </properties>
 
     <!--

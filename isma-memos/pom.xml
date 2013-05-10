@@ -49,22 +49,24 @@
             <artifactId>hsqldb</artifactId>
         </dependency>
         <dependency>
-	    <groupId>jdom</groupId>
-	    <artifactId>jdom</artifactId>
-	</dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+        </dependency>
     </dependencies>
     <properties>
         <clientMainClass>org.isma.memos.main.MemosLauncher</clientMainClass>
-        <applicationName>PostIt Manager</applicationName>
-        <databaseServer/>
-        <databasePort/>
-        <databaseCatalog/>
-        <databaseBase>memo-tr</databaseBase>
-        <databaseUser>SA</databaseUser>
-        <databasePassword></databasePassword>
-        <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}/${databaseBase}</databaseJdbcUrl>
-        <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
-        <databaseType>hsqldb</databaseType>
+        <!--
+                <applicationName>PostIt Manager</applicationName>
+                <databaseServer/>
+                <databasePort/>
+                <databaseCatalog/>
+                <databaseBase>memo-tr</databaseBase>
+                <databaseUser>SA</databaseUser>
+                <databasePassword></databasePassword>
+                <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}/${databaseBase}</databaseJdbcUrl>
+                <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
+                <databaseType>hsqldb</databaseType>
+        -->
     </properties>
 
     <!--

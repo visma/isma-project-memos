@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
-	<modelVersion>4.0.0</modelVersion>
+
+    <modelVersion>4.0.0</modelVersion>
     <!--
      | POM Relationships
 	-->
@@ -18,7 +18,20 @@
     -->
     <name>isma memos project</name>
     <description>application de gestion de post-it</description>
-	<packaging>pom</packaging>
+    <packaging>pom</packaging>
+
+    <properties>
+        <applicationName>PostIt Manager</applicationName>
+        <databaseServer/>
+        <databasePort/>
+        <databaseCatalog/>
+        <databaseBase>memo-tr</databaseBase>
+        <databaseUser>SA</databaseUser>
+        <databasePassword></databasePassword>
+        <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}/${databaseBase}</databaseJdbcUrl>
+        <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
+        <databaseType>hsqldb</databaseType>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -39,7 +52,7 @@
     </dependencyManagement>
     <modules>
         <module>isma-memos</module>
-         <module>isma-memos-release-test</module>
+        <module>isma-memos-release-test</module>
     </modules>
     <scm>
         <connection>scm:git:https://github.com/visma/isma-project-memos.git</connection>
