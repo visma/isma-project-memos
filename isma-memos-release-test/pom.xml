@@ -68,7 +68,7 @@
         <databaseBase>memo-tr</databaseBase>
         <databaseUser>SA</databaseUser>
         <databasePassword></databasePassword>
-        <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}\${databaseBase}</databaseJdbcUrl>
+        <databaseJdbcUrl>jdbc:hsqldb:file:${basedir}/${databaseBase}</databaseJdbcUrl>
         <databaseDriver>org.hsqldb.jdbcDriver</databaseDriver>
         <databaseType>hsqldb</databaseType>
     </properties>
