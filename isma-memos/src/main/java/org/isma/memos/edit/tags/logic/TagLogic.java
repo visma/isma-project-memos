@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.awt.event.KeyEvent.*;
 import static javax.swing.JOptionPane.*;
 
 public class TagLogic extends AbstractLogic<MemoManagerConfiguration> {
@@ -53,10 +54,13 @@ public class TagLogic extends AbstractLogic<MemoManagerConfiguration> {
             public void keyReleased(KeyEvent e) {
                 try {
                     List<Integer> authorizedKeys = new ArrayList<Integer>();
-                    authorizedKeys.add(KeyEvent.VK_INSERT);
-                    authorizedKeys.add(KeyEvent.VK_DELETE);
-                    authorizedKeys.add(KeyEvent.VK_F2);
-                    if (!authorizedKeys.contains(e.getKeyCode())) {
+                    authorizedKeys.add(VK_INSERT);
+                    authorizedKeys.add(VK_I);
+                    authorizedKeys.add(VK_DELETE);
+                    authorizedKeys.add(VK_D);
+                    authorizedKeys.add(VK_F2);
+                    int keyCode = e.getKeyCode();
+                    if (!authorizedKeys.contains(keyCode)) {
                         return;
                     }
                     TreePath[] selectionPaths = form.getTagEditionTree().getSelectionModel().getSelectionPaths();
@@ -64,13 +68,13 @@ public class TagLogic extends AbstractLogic<MemoManagerConfiguration> {
                         throw new IllegalArgumentException("No selected node");
                     }
                     TagTreeNode node = (TagTreeNode)selectionPaths[selectionPaths.length - 1].getLastPathComponent();
-                    if (e.getKeyCode() == KeyEvent.VK_INSERT) {
+                    if (keyCode == VK_INSERT || keyCode == VK_I) {
                         add(node);
                     }
-                    if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    if (keyCode == VK_DELETE || keyCode == VK_D) {
                         delete(node);
                     }
-                    if (e.getKeyCode() == KeyEvent.VK_F2) {
+                    if (keyCode == VK_F2) {
                         rename(node);
                     }
                 }

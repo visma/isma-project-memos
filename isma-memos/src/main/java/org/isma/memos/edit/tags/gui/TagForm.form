@@ -32,7 +32,7 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="INSERT = insert, DEL = delete, F2 = rename, Drag N Drop = move"/>
+          <text value="insert = INSERT or i, delete = DEL or d, rename = F2, move = Drag N Drop"/>
         </properties>
       </component>
     </children>
