@@ -33,9 +33,9 @@ public class MainMemosLogic implements IMenuBarLogic, TagEventListener {
         searchLogic.rebuildTagTree();
         if (existingTagsModified && !resultsLogic.isCleared()) {
             showMessageDialog(form.getMainPanel(),
-                              "Possible obsolete tags : clearing results",
-                              "Message",
-                              INFORMATION_MESSAGE);
+                    "Possible obsolete tags : clearing results",
+                    "Message",
+                    INFORMATION_MESSAGE);
             resultsLogic.clearResults();
             previewLogic.clearPreview();
         }
@@ -46,9 +46,12 @@ public class MainMemosLogic implements IMenuBarLogic, TagEventListener {
                           InitManager initManager,
                           TagManager tagManager,
                           MemoManager memoManager)
-          throws Exception {
+            throws Exception {
         initManager.init();
-
+        //
+        //List<Memo> memos = memoManager.selectAll(tagManager.getRootTag());
+        //System.out.println("nb memos : " + memos.size());
+        //
         menuBar = new MemosMenuBar(context);
         menuBar.build();
         context.getMainFrame().setJMenuBar(menuBar);

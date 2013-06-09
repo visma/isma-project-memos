@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.List;
 
 public interface IMemoDAO {
+    List<Memo> selectAll(Tag rootTag) throws Exception;
 
     List<Memo> search(Tag rootTag, String title, String content, List<Tag> tags) throws Exception;
 

@@ -48,7 +48,7 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
             return "";
         }
         return searchedTags.size() + " = (select count(1) from MEMO_TAGS where ID_MEMO = M.ID and ID_TAG in ("
-               + joinIdTags(searchedTags) + ")) ";
+                + joinIdTags(searchedTags) + ")) ";
     }
 
 
@@ -73,29 +73,47 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
         String whereClause = titleClause;
         if (whereClause.length() > 0 && contentClause.length() > 0) {
             whereClause = whereClause + " and " + contentClause;
-        }
-        else {
+        } else {
             whereClause = whereClause + contentClause;
         }
         if (whereClause.length() > 0 && tagClause.length() > 0) {
             whereClause = whereClause + " and " + tagClause;
-        }
-        else {
+        } else {
             whereClause = whereClause + tagClause;
         }
         return whereClause.length() > 0 ? " where " + whereClause : "";
     }
 
+    //TODO afficher les resultats si les tags fils correspondent aux criteres title/content
+    public List<Memo> selectAll(Tag rootTag) throws Exception {
+        Set<Memo> memoSet = new TreeSet<Memo>(new LabeleableComparator());
+
+        //Pas possible de faire de distinct avec le clob
+        String sql = "SELECT M.ID, M.TITLE, M.CONTENT FROM MEMO M ORDER BY M.TITLE";
+        PreparedStatement stmt = getConnection().prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int idMemo = rs.getInt("ID");
+            String title = rs.getString("TITLE");
+            List<Tag> selectedTags = getTagsForMemo(rootTag, idMemo);
+            List<Attachment> attachments = getAttachmentsForMemo(idMemo);
+            final String content = clobToString(rs.getClob("CONTENT"));
+            Memo memo = new Memo(idMemo, title, content, selectedTags, attachments);
+            memoSet.add(memo);
+        }
+        return new ArrayList<Memo>(memoSet);
+    }
+
 
     //TODO afficher les resultats si les tags fils correspondent aux criteres title/content
     public List<Memo> search(Tag rootTag, String searchedTitle, String searchedContent, List<Tag> tags)
-          throws Exception {
+            throws Exception {
         Set<Memo> memoSet = new TreeSet<Memo>(new LabeleableComparator());
 
         //Pas possible de faire de distinct avec le clob
         String sql = "SELECT M.ID, M.TITLE, M.CONTENT FROM MEMO M left join MEMO_TAGS MT on M.ID = MT.ID_MEMO"
-                     + buildSearchWhereClause(searchedTitle, searchedContent, tags)
-                     + "  ORDER BY M.TITLE";
+                + buildSearchWhereClause(searchedTitle, searchedContent, tags)
+                + "  ORDER BY M.TITLE";
         PreparedStatement stmt = getConnection().prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
@@ -112,7 +130,7 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
 
 
     public Memo saveMemo(String title, String content, List<Tag> tags, List<Attachment> attachments)
-          throws Exception {
+            throws Exception {
         int idMemo = saveMemo(title, content);
         saveTagsForMemo(idMemo, tags);
         saveAttachmentsForMemo(idMemo, attachments);
@@ -123,7 +141,7 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
 
     private List<Tag> getTagsForMemo(Tag rootTag, int idMemo) throws SQLException {
         PreparedStatement pst = getConnection().prepareStatement(
-              "SELECT T.ID, T.ID_PARENT, T.NAME FROM MEMO_TAGS MT inner join TAG T on T.ID = MT.ID_TAG where MT.ID_MEMO = ?");
+                "SELECT T.ID, T.ID_PARENT, T.NAME FROM MEMO_TAGS MT inner join TAG T on T.ID = MT.ID_TAG where MT.ID_MEMO = ?");
         pst.setInt(1, idMemo);
         ResultSet rs = pst.executeQuery();
         List<Tag> memoTags = new ArrayList<Tag>();
@@ -142,7 +160,7 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
     private List<Attachment> getAttachmentsForMemo(int idMemo) throws SQLException {
         List<Attachment> beans = new ArrayList<Attachment>();
         PreparedStatement pst = getConnection().prepareStatement(
-              "SELECT A.ID, A.NAME FROM ATTACHMENT A where A.ID_MEMO = ?");
+                "SELECT A.ID, A.NAME FROM ATTACHMENT A where A.ID_MEMO = ?");
         pst.setInt(1, idMemo);
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
@@ -173,8 +191,8 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
         File file = new File(attachment.getName());
 
         PreparedStatement stmt = getConnection().prepareStatement(
-              "INSERT INTO Attachment (id_memo, name, content) values (?, ?, ?)",
-              Statement.RETURN_GENERATED_KEYS);
+                "INSERT INTO Attachment (id_memo, name, content) values (?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
         stmt.setInt(1, attachment.getIdMemo());
         stmt.setString(2, file.getName());
 
@@ -191,8 +209,8 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
 
     private void saveTagForMemo(int idMemo, Tag tag) throws SQLException {
         PreparedStatement stmt = getConnection().prepareStatement(
-              "INSERT INTO MEMO_TAGS (id_memo, id_tag) values (?, ?)",
-              Statement.RETURN_GENERATED_KEYS);
+                "INSERT INTO MEMO_TAGS (id_memo, id_tag) values (?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
         stmt.setInt(1, idMemo);
         stmt.setInt(2, tag.getId());
         stmt.executeUpdate();
@@ -201,7 +219,7 @@ public class MemoSQLDAO extends AbstractSQLDAO implements IMemoDAO {
 
     private int saveMemo(String title, String content) throws SQLException {
         PreparedStatement stmt = getConnection().prepareStatement("INSERT INTO MEMO (title, content) values (?, ?)",
-                                                                  Statement.RETURN_GENERATED_KEYS);
+                Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, title);
         final Clob clob = getConnection().createClob();
         clob.setString(1, content);

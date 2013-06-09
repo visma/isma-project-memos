@@ -32,12 +32,12 @@ public class MemosMenuBar extends AbstractApplicationMenuBar<MemoManagerConfigur
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    System.out.println("quit");
                     //Pour être sur de closer la connexion et de dégager les fichiers tempo
-                    context.getGlobalComponent(AbstractSQLHandler.class).commit();
+                    context.getGlobalComponent(AbstractSQLHandler.class).end();
                     //Clean des pièces jointes téléchargées
                     FileUtils.forceDeleteIfExists(context.getConfiguration().getAttachmentTmpDirectory());
-                }
-                catch (Exception e1) {
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
                 MemosMenuBar.super.buildQuitAction().actionPerformed(e);

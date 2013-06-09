@@ -3,6 +3,7 @@ package org.isma.memos.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 public abstract class AbstractSQLHandler {
     private Connection connection;
     private ISQLConfiguration conf;
@@ -23,9 +24,9 @@ public abstract class AbstractSQLHandler {
 
     private Connection buildConnection() throws SQLException {
         System.out.printf("create connection(URL=%s, USER=%s, PASSWORD=%s)\n",
-                          conf.getURL(),
-                          conf.getUser(),
-                          conf.getPassword());
+                conf.getURL(),
+                conf.getUser(),
+                conf.getPassword());
         return DriverManager.getConnection(conf.getURL(), conf.getUser(), conf.getPassword());
     }
 
@@ -41,4 +42,6 @@ public abstract class AbstractSQLHandler {
     public void buildDriver() throws Exception {
         Class.forName(getConf().getDriverClassName()).newInstance();
     }
+
+    public abstract void end() throws SQLException;
 }

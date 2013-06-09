@@ -17,14 +17,18 @@ public class MemoManager {
     }
 
 
+    public List<Memo> selectAll(Tag rootTag) throws Exception {
+        return dao.selectAll(rootTag);
+    }
+
     public List<Memo> search(Tag rootTag, String searchedTitle, String searchContent, List<Tag> searchedTags)
-          throws Exception {
+            throws Exception {
         return dao.search(rootTag, searchedTitle, searchContent, searchedTags);
     }
 
 
     public Memo save(Memo memo, String title, String content, List<Tag> tags, List<Attachment> attachments)
-          throws Exception {
+            throws Exception {
         if (memo != null) {
             dao.deleteMemo(memo.getId());
         }

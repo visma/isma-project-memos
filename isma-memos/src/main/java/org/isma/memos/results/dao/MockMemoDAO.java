@@ -41,15 +41,19 @@ public class MockMemoDAO implements IMemoDAO {
         throw new RuntimeException("not implemented");
     }
 
+    @Override
+    public List<Memo> selectAll(Tag rootTag) throws Exception {
+        throw new RuntimeException("not implemented");
+    }
 
     public List<Memo> search(Tag rootTag, String paramTitle, String paramContent, List<Tag> tags) {
         List<Memo> foundList = new ArrayList<Memo>();
         for (Memo memo : memos) {
             if (paramTitle.length() > 0 && !contains(memo.getTitle(), paramTitle)) {
-                    continue;
+                continue;
             }
             if (paramContent.length() > 0 && !contains(memo.getContent(), paramContent)) {
-                    continue;
+                continue;
             }
             if (!tags.isEmpty()) {
                 boolean paramTagsMatches = true;

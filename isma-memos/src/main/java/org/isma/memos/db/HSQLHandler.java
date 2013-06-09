@@ -1,6 +1,8 @@
 package org.isma.memos.db;
 
 import java.sql.SQLException;
+import java.sql.Statement;
+
 public class HSQLHandler extends AbstractSQLHandler {
 
     public HSQLHandler(AbstractSQLConfiguration configuration) {
@@ -15,5 +17,13 @@ public class HSQLHandler extends AbstractSQLHandler {
 //        Statement statement = getConnection().createStatement();
 //        statement.executeUpdate("SHUTDOWN");
 //        statement.close();
+    }
+
+    @Override
+    public void end() throws SQLException {
+        Statement st = getConnection().createStatement();
+        st.getConnection().commit();
+        st.execute("SHUTDOWN COMPACT");
+        getConnection().close();
     }
 }
