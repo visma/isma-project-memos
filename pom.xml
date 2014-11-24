@@ -52,7 +52,7 @@
     </dependencyManagement>
     <modules>
         <module>isma-memos</module>
-        <!--<module>isma-memos-release-test</module>-->
+        <module>isma-memos-release-test</module>
     </modules>
     <scm>
         <connection>scm:git:https://github.com/visma/isma-project-memos.git</connection>
